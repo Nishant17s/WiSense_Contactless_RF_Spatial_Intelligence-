@@ -1,0 +1,33 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Next.js build output
+/.next/
+/out/
+
+# Python Virtual Environment
+/.venv/
+/venv/
+/__pycache__/
+*.pyc
+*.pyo
+
+# Testing and coverage
+/coverage
+
+# Environment variables
+.env*.local
+.env
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE and OS files
+.DS_Store
+*.pem
+.vscode/
+.idea/
+thumbs.db

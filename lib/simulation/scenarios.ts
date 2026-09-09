@@ -1,0 +1,88 @@
+import { ScenarioDefinition } from '../types/sensing';
+
+export const SCENARIOS: ScenarioDefinition[] = [
+  {
+    id: 'auto_cycle',
+    name: 'Auto Cycle (All Scenarios)',
+    description: 'Sequentially steps through all 11 sensing scenarios every 12 seconds with dynamic transitions.',
+    badge: 'DEMO LOOP',
+    duration_sec: 12,
+  },
+  {
+    id: 'empty_room',
+    name: 'Empty Room Baseline',
+    description: 'Zero human presence. Calibrated RF baseline, minimal variance across 51 OFDM subcarriers.',
+    badge: 'BASELINE',
+    duration_sec: 10,
+  },
+  {
+    id: 'single_standing',
+    name: 'Single Person — Standing (Zone B2)',
+    description: 'Stationary human in central room zone B2. Subcarrier phase breathing perturbation, 94% confidence.',
+    badge: 'PRESENCE',
+    duration_sec: 10,
+  },
+  {
+    id: 'single_walking',
+    name: 'Single Person — Walking (A1 → C3)',
+    description: 'Continuous continuous path crossing across zones A1 → B1 → B2 → C2 → C3 with live Doppler shift.',
+    badge: 'TRACKING',
+    duration_sec: 15,
+  },
+  {
+    id: 'multi_person',
+    name: 'Multi-Person (3 People in Zones A, B, C)',
+    description: 'Three distinct anonymous persons tracked independently across separate spatial zones.',
+    badge: 'MULTI-TARGET',
+    duration_sec: 15,
+  },
+  {
+    id: 'crowd',
+    name: 'Crowded Room (5 Anonymous People)',
+    description: 'Dense occupancy testing edge AI spatial clustering & continuous multipath CSI interference.',
+    badge: 'HIGH DENSITY',
+    duration_sec: 15,
+  },
+  {
+    id: 'fall_detection',
+    name: 'Critical Fall Event (Zone B2 Alert)',
+    description: 'Person 01 suffers sudden high-velocity downward deceleration followed by horizontal stillness.',
+    badge: 'SAFETY ALERT',
+    duration_sec: 12,
+  },
+  {
+    id: 'zone_transition',
+    name: 'Rapid Zone Transition (Left → Right)',
+    description: 'High velocity lateral movement crossing from Zone A1 to Zone C3 in 4.5 seconds.',
+    badge: 'DOPPLER',
+    duration_sec: 12,
+  },
+  {
+    id: 'room_occupancy',
+    name: 'Zone Occupancy Load Test',
+    description: 'Simulates uneven room loading with Zone B at capacity and Zone C clear.',
+    badge: 'ANALYTICS',
+    duration_sec: 12,
+  },
+  {
+    id: 'elderly_care',
+    name: 'Assisted Living & Elderly Care',
+    description: 'Subtle slow movements, long sedentary periods with continuous safety watch.',
+    badge: 'HEALTHCARE',
+    duration_sec: 15,
+  },
+  {
+    id: 'emergency_scenario',
+    name: 'Emergency Sudden Collapse & Evacuation',
+    description: 'Rapid movement followed by sudden collapse in Zone A3 with immediate critical safety triggers.',
+    badge: 'CRITICAL',
+    duration_sec: 12,
+  },
+  {
+    id: 'signal_degraded',
+    name: 'Signal Degradation / RF Noise Stress',
+    description: 'High environmental RF interference, noise floor jumps to -70 dBm, testing Hampel filter sanitization.',
+    badge: 'NOISY RF',
+    duration_sec: 10,
+  },
+];
