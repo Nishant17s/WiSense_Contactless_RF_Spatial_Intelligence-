@@ -1,32 +1,30 @@
 # WiSense: Contactless RF Spatial Intelligence
 
 > **Wi-Fi CSI • Edge AI • Contactless Indoor Spatial Intelligence & Fall Safety Monitoring**  
-> Camera-free, wearable-free indoor spatial tracking, activity recognition, and fall detection powered by 5.24 GHz Wi-Fi Channel State Information (CSI) and Edge AI.
+> Camera-free, wearable-free indoor spatial tracking, activity recognition, and fall detection powered by 5.24 GHz Wi-Fi Channel State Information (CSI) and XGBoost Machine Learning.
 
 ---
 
 ## 🛰️ 1. Project Overview
 
-**WiSense** is a privacy-first spatial intelligence and safety monitoring platform that analyzes perturbations in commodity Wi-Fi RF multipath fields. By extracting 51 OFDM subcarrier amplitudes and phases at 100 Hz from ESP32-S3 transceiver nodes, WiSense detects presence, tracks continuous human movement across calibrated 3×3 room zones (A1–C3), classifies activities, and triggers millisecond fall alerts—completely without cameras, microphones, or wearables.
+**WiSense** is a privacy-first spatial intelligence and safety monitoring platform that analyzes perturbations in commodity Wi-Fi RF multipath fields. By extracting 51 OFDM subcarrier amplitudes and phases at 100 Hz from ESP32-S3 transceiver nodes, WiSense detects presence, tracks continuous human movement across calibrated room zones (A1–C3), classifies activities (Sitting vs Walking), and triggers millisecond fall alerts—completely without cameras, microphones, or wearables.
 
-```
+```text
                   Wi-Fi Signal Propagation (5.24 GHz)
                                   ↓
               Human Interaction with RF Multipath Field
                                   ↓
-             ESP32-S3 Nodes (1 TX-01, 2 RX-01/02 @ 100 Hz)
+             ESP32-S3 Nodes (1 TX-01, 1+ RX-01 @ 100 Hz)
                                   ↓
            51 OFDM Subcarrier CSI Matrix (Amplitude + Phase)
                                   ↓
-       Digital Signal Processing (Hampel Filter + Butterworth LPF)
+                   UDP Data Stream to Python Server
                                   ↓
-                Doppler Velocity Spectrum & FFT Shifts
+             Edge AI Spatial Classifier (XGBoost) + Physics Heuristics
                                   ↓
-            Edge AI Spatial Classifier (Random Forest + XGBoost)
+      Presence • Occupancy Zone • Activity (Walk/Sit) • Fall Alert
                                   ↓
-      Presence • Room Count • Zone (A1–C3) • Velocity • Fall Alert
-                                  ↓
-        WiSense 3D WebGL Observatory & Tactical Command Center
+           WiSense Next.js 2D Radar & Tactical Command Center
 ```
 
 ---
@@ -34,47 +32,45 @@
 ## ✨ 2. Key Features
 
 - **🛡️ 100% Privacy-Preserving**: Operates without optical lenses or audio capture, suitable for private spaces, healthcare facilities, bedrooms, and eldercare suites.
-- **🌐 3D Cinematic RF Observatory**: Full-screen Three.js / WebGL 3D environment showing animated RF wave fields, Fresnel links, dynamic particle disturbances, and holographic human avatars with physics-based fall animation.
-- **🎯 2D Precision Spatial Radar**: High-resolution CAD coordinate grid ($8.0\text{m} \times 6.0\text{m}$) with real-time target blips, velocity vectors, motion breadcrumb trails, and zone probability heatmaps.
-- **📊 51-Subcarrier CSI Signal Lab**: Real-time 51 OFDM subcarrier amplitude and phase spectrums, Doppler velocity FFT ($-50\text{ Hz}$ to $+50\text{ Hz}$), rolling time-frequency waterfall spectrogram, and live DSP filter toggles.
-- **⚡ Dual-Mode Single Source of Truth**:
-  - **DEMO Mode**: 12 deterministic simulation scenarios (Kinematic walking circuits, crowd motion, fall incidents, multi-target tracking).
-  - **LIVE Mode**: Strictly non-simulated real-time hardware stream via FastAPI WebSocket gateway (`ws://localhost:8000/ws/sensing`).
-- **🚨 Instant Fall Detection & Dispatch**: Audio-visual alert dispatch triggered upon high-velocity downward deceleration with on-screen acknowledgment workflow.
-- **📡 Hardware Network Topology**: Real-time telemetry monitoring for 3 nodes (RSSI, packet rates, noise floors, uptime, fault injection testing).
+- **🎯 2D Precision Spatial Radar**: High-resolution coordinate grid with real-time target blips, live zone probabilities, and presence indicators.
+- **📊 CSI Signal Processing**: Real-time temporal variance monitoring across 51 OFDM subcarriers.
+- **⚡ XGBoost Machine Learning**: Capable of achieving 99%+ accuracy for spatial zone classification after a brief 5-second per-zone calibration/data collection phase.
+- **🚨 Physics-Based Fall Detection**: Instant fall alerts triggered by a heuristic analysis of massive variance spikes (fast physical drops) followed by total signal stillness (lying on the floor).
+- **🚶 Activity Tracking**: Accurately distinguishes between a human walking (high subcarrier phase disruption) versus sitting/standing still (low disruption).
 
 ---
 
 ## 🛠️ 3. Hardware Architecture & Specifications
 
-| Component | Node ID | Model | Frequency | Role | Mounting Position |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Transmitter** | `TX-01` | ESP32-S3-DevKitC-1U-N8R8 (8MB PSRAM) | 5.24 GHz (Ch 48) | CSI Beacon Broadcast | North Wall (Center) |
-| **Receiver 1** | `RX-01` | ESP32-S3-DevKitC-1U-N8R8 (8MB PSRAM) | 5.24 GHz (Ch 48) | CSI Packet Capture @ 100Hz | South-West Corner |
-| **Receiver 2** | `RX-02` | ESP32-S3-DevKitC-1U-N8R8 (8MB PSRAM) | 5.24 GHz (Ch 48) | CSI Packet Capture @ 100Hz | South-East Corner |
-| **Antennas** | All | 6dBi Dual-Band Dipole + IPEX MHF1 | 2.4 / 5 GHz | High-gain spatial diversity | Wall / Corner Mount |
+| Component | Node ID | Model | Frequency | Role |
+| :--- | :--- | :--- | :--- | :--- |
+| **Transmitter** | `TX-01` | ESP32-S3-DevKitC | 2.4/5.0 GHz | CSI Beacon Broadcast |
+| **Receiver** | `RX-01` | ESP32-S3-DevKitC | 2.4/5.0 GHz | Promiscuous CSI Packet Capture @ 100Hz |
+
+*Note: The system supports ambient/passive sensing. If the dedicated TX-01 node is turned off, the RX-01 node can passively ingest and analyze CSI packets from a standard home Wi-Fi router transmitting on the same channel.*
 
 ---
 
 ## 💻 4. Tech Stack
 
-- **Frontend**: Next.js 14 (App Router), React 18, TypeScript, Tailwind CSS, Lucide Icons.
-- **3D & Spatial Graphics**: Three.js, React Three Fiber (`@react-three/fiber`), `@react-three/drei`.
-- **Backend & Edge Gateway**: Python 3.10+, FastAPI, Uvicorn, WebSockets, NumPy, Pydantic.
-- **DSP & Signal Algorithms**: Hampel Identifier (outlier rejection), Butterworth 4th-order Low-Pass Filter, Doppler Short-Time Fourier Transform (STFT), Phase Unwrapping.
+- **Frontend**: Next.js 14, React 18, Tailwind CSS, Lucide Icons.
+- **Backend Edge Gateway**: Python 3.10+, Raw UDP Socket Ingestion, WebSockets (`websockets`, `asyncio`), Pandas.
+- **Machine Learning**: `xgboost`, `scikit-learn` (Label Encoding, Train/Test Split, Classification).
+- **Embedded Firmware**: C, ESP-IDF (Espressif IoT Development Framework), `esp_wifi` CSI promiscuous mode callbacks.
 
 ---
 
 ## 🚀 5. Quick Start Guide
 
 ### Prerequisites
-- Node.js 18.x, 20.x, or 22+
-- Python 3.10+ (for live hardware gateway)
+- Node.js 18+
+- Python 3.10+
+- ESP-IDF v5.0+ (For flashing the ESP32-S3 boards)
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/rukeshsg/contactless-spatial-intelligence.git
-cd contactless-spatial-intelligence
+git clone https://github.com/Nishant17s/WiSense_Contactless_RF_Spatial_Intelligence-.git
+cd WiSense_Contactless_RF_Spatial_Intelligence-
 ```
 
 ### 2. Install & Run Frontend
@@ -82,69 +78,52 @@ cd contactless-spatial-intelligence
 # Install frontend dependencies
 npm install
 
-# Run development server
-npm run dev
+# Run development server (Port 4000)
+npm run dev -- -p 4000
 ```
-Open [http://localhost:3000](http://localhost:3000) to launch the WiSense Command Center.
+Open [http://localhost:4000](http://localhost:4000) to launch the WiSense Dashboard.
 
-### 3. Run Live Hardware Gateway Backend (Optional)
+### 3. Setup Python Backend & Train AI
 ```bash
 # Set up Python environment
-python -m venv .venv
-.\.venv\Scripts\activate   # On Windows (or source .venv/bin/activate on Unix)
+python3 -m venv .venv
+source .venv/bin/activate
 
-# Install backend dependencies
+# Install dependencies
 pip install -r backend/requirements.txt
 
-# Start FastAPI CSI gateway
-python backend/server.py
+# 1. Collect Data (Stand in Zone A1, run script, type 'A1')
+# Repeat for 'EMPTY', 'B2', 'C3', etc.
+python3 scripts/collect_training_data.py
+
+# 2. Train the XGBoost Model
+python3 scripts/train_xgboost.py
+
+# 3. Start the Live Server (Listens on UDP 5000, Broadcasts on WS 8765)
+python3 backend/server.py
 ```
-- Gateway Status API: `http://localhost:8000/api/v1/status`
-- Real-Time WebSocket Stream: `ws://localhost:8000/ws/sensing`
-- Hardware CSI Ingest Endpoint: `POST http://localhost:8000/api/v1/csi/ingest`
 
----
+### 4. Flash Firmware (ESP32-S3)
+Ensure your laptop and ESP32s are connected to the same Wi-Fi network. Update `WIFI_SSID`, `WIFI_PASS`, and `HOST_IP` in `rx_main.c` before flashing.
+```bash
+# Flash TX Node
+cd firmware/tx_node
+idf.py build flash monitor
 
-## 📁 6. Project Directory Structure
-
-```
-contactless-spatial-intelligence/
-├── app/
-│   ├── dashboard/          # Command Center: KPIs, 2D Radar Grid, Safety Panel
-│   ├── spatial/            # 3D WebGL Cinematic RF Room Observatory
-│   ├── signals/            # CSI Signal Lab: 51 Subcarriers, Doppler, Spectrogram
-│   ├── nodes/              # 3-Node Topology Monitor & Fault Injection
-│   ├── history/            # Spatial Event Log & CSV Analytics Export
-│   ├── settings/           # Calibration, DSP & AI Threshold Settings
-│   ├── layout.tsx          # Global Shell & Navigation
-│   └── globals.css         # WiSense Design System Styles
-├── backend/
-│   ├── server.py           # FastAPI Real-Time CSI Gateway & Ingest API
-│   └── requirements.txt    # Python Backend Dependencies
-├── components/
-│   ├── brand/              # WiSense SVG Logos & Brand Tokens
-│   ├── dashboard/          # RoomOverview2D, KPIStrip, SafetyPanel
-│   ├── spatial/            # RoomScene, PersonModel3D, RFWaveField, SensorNode3D
-│   ├── signals/            # CSISubcarrierChart, DopplerVelocityChart, SpectrogramCanvas
-│   └── layout/             # AppNavbar, AppSidebar, GlobalSafetyAlert
-├── lib/
-│   ├── providers/          # DataProvider (Strict DEMO vs LIVE mode logic)
-│   ├── simulation/         # 12 Deterministic Kinematic Physics Scenarios
-│   ├── types/              # Sensing, Spatial & Telemetry Type Definitions
-│   └── utils/              # Formatting & DSP Utilities
-└── README.md
+# Flash RX Node
+cd firmware/rx_node
+idf.py build flash monitor
 ```
 
 ---
 
-## 🔒 7. Privacy & Safety Guarantee
+## 🔒 6. Privacy & Safety Guarantee
 
-- **Zero Cameras**: Total immunity from optical surveillance; safe for bedrooms, bathrooms, and private suites.
-- **Zero Wearables**: Passive contactless sensing protecting seniors and occupants without requiring pendants, bracelets, or tags.
-- **Instant Fall Alert**: Automated audio-visual dispatch triggered by sudden downward RF velocity shifts.
+- **Zero Cameras**: Total immunity from optical surveillance.
+- **Zero Wearables**: Passive contactless sensing protecting seniors without pendants or bracelets.
+- **Ambient RF Physics**: Utilizes invisible, low-power Wi-Fi radio waves already present in modern environments.
 
 ---
 
 ## 📄 License
-
-This project is licensed under the MIT License.
+This project is proprietary and confidential for SIH Hackathon evaluation.

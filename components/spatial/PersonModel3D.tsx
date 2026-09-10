@@ -115,6 +115,7 @@ export function MotionTrail3D({ person, enabled }: { person: PersonState; enable
   const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
   return (
+    // @ts-ignore
     <line geometry={geometry}>
       <lineBasicMaterial
         color={person.fall_detected ? '#EF5350' : '#B5D04D'}

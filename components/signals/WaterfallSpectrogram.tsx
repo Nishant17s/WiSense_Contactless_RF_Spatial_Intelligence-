@@ -85,7 +85,7 @@ export function WaterfallSpectrogram() {
         {/* X Axis Labels */}
         <div className="absolute bottom-1.5 left-2 right-2 flex justify-between text-[9px] font-mono text-slate-400 bg-black/60 px-2 py-0.5 rounded-md pointer-events-none">
           <span>SC -25 (5.18 GHz)</span>
-          <span>SC 0 (5.24 GHz)</span>
+          <span>SC 0 (2.4 GHz)</span>
           <span>SC +25 (5.30 GHz)</span>
         </div>
       </div>

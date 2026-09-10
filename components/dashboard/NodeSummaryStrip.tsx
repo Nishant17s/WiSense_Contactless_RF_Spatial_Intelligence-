@@ -2,11 +2,14 @@
 
 import React from 'react';
 import { useSensing } from '@/lib/providers/DataProvider';
-import { Network, Radio } from 'lucide-react';
+import { Network, Radio, Wifi } from 'lucide-react';
 import { formatDbm } from '@/lib/utils/formatters';
 
+import { WifiConfigModal } from './WifiConfigModal';
+import { useState } from 'react';
 export function NodeSummaryStrip() {
   const { state } = useSensing();
+  const [configNode, setConfigNode] = useState<string | null>(null);
   const nodes = state?.nodes || [];
 
   return (
@@ -44,7 +47,11 @@ export function NodeSummaryStrip() {
                     </div>
                     <div className="text-[10px] text-slate-500 dark:text-brand-gray font-mono">{node.ip_address}</div>
                   </div>
-                </div>
+                
+                  <button onClick={() => setConfigNode(node.id)} className="ml-2 text-[10px] bg-slate-800 hover:bg-slate-700 text-white px-2 py-1 rounded transition-colors" title="Configure Wi-Fi">
+                    <Wifi className="w-3 h-3" />
+                  </button>
+</div>
 
                 <div className="text-right font-mono">
                   <div className="text-brand-olive dark:text-brand-lime font-bold">{formatDbm(node.rssi)}</div>
@@ -55,6 +62,11 @@ export function NodeSummaryStrip() {
           })}
         </div>
       </div>
+      <WifiConfigModal 
+        isOpen={configNode !== null} 
+        onClose={() => setConfigNode(null)} 
+        nodeId={configNode} 
+      />
     </div>
   );
 }

@@ -45,13 +45,15 @@ export function RoomOverview2D() {
           )}
         </div>
 
-        <Link
-          href="/spatial"
-          className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-[var(--ws-surface-elevated)] hover:bg-brand-lime/15 border border-[var(--ws-border)] hover:border-brand-lime/50 text-xs font-sans font-semibold text-slate-800 dark:text-brand-lime transition-all group"
-        >
-          <span>LAUNCH 3D OBSERVATORY</span>
-          <Maximize2 className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
-        </Link>
+        {mode !== 'LIVE' && (
+          <Link
+            href="/spatial"
+            className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-[var(--ws-surface-elevated)] hover:bg-brand-lime/15 border border-[var(--ws-border)] hover:border-brand-lime/50 text-xs font-sans font-semibold text-slate-800 dark:text-brand-lime transition-all group"
+          >
+            <span>LAUNCH 3D OBSERVATORY</span>
+            <Maximize2 className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+          </Link>
+        )}
       </div>
 
       {/* Main Spatial Grid Plane */}
@@ -330,7 +332,7 @@ export function RoomOverview2D() {
         <div className="absolute top-1.5 left-1/2 transform -translate-x-1/2 z-20 flex items-center space-x-1 px-2.5 py-0.5 rounded-md bg-[#181a15]/90 border border-brand-lime/50 text-[10px] font-mono text-brand-lime shadow-md">
           <Radio className="w-3 h-3 animate-pulse" />
           <span className="font-bold">TX-01</span>
-          <span className="text-[8px] text-slate-400 px-1 py-0.2 rounded bg-black/40">5.24 GHz</span>
+          <span className="text-[8px] text-slate-400 px-1 py-0.2 rounded bg-black/40">2.4 GHz</span>
         </div>
 
         {/* RX-01 (Receiver: Bottom Left) */}

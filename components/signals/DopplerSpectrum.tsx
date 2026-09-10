@@ -56,7 +56,7 @@ export function DopplerSpectrum() {
         <span className="font-brand font-bold uppercase text-slate-800 dark:text-slate-200">
           DOPPLER FREQUENCY SHIFT (FFT VELOCITY)
         </span>
-        <span className="text-[10px] text-brand-lavender font-mono font-bold">5.24 GHz Carrier</span>
+        <span className="text-[10px] text-brand-lavender font-mono font-bold">2.4 GHz Carrier</span>
       </div>
 
       <div className="relative flex-1 min-h-[180px] rounded-2xl overflow-hidden border border-[var(--ws-border)] bg-[#11130F]">

@@ -97,9 +97,11 @@ export function CSIBeamLinks({ txPos, rx1Pos, rx2Pos }: { txPos: [number, number
 
   return (
     <group>
+      {/* @ts-ignore */}
       <line ref={line1Ref} geometry={geom1}>
         <lineDashedMaterial color="#B5D04D" dashSize={0.25} gapSize={0.15} opacity={0.6} transparent />
       </line>
+      {/* @ts-ignore */}
       <line ref={line2Ref} geometry={geom2}>
         <lineDashedMaterial color="#7D7897" dashSize={0.25} gapSize={0.15} opacity={0.6} transparent />
       </line>

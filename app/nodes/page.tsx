@@ -62,7 +62,7 @@ export default function NodesPage() {
           <div className="z-10 p-3.5 rounded-2xl bg-[var(--ws-surface)] border-2 border-brand-lime shadow-md flex flex-col items-center">
             <Radio className="w-5 h-5 text-brand-olive dark:text-brand-lime mb-1 animate-pulse" />
             <span className="font-brand text-xs font-bold text-slate-900 dark:text-white">TX-01 (Transmitter)</span>
-            <span className="font-mono text-[10px] text-brand-olive dark:text-brand-lime font-bold">5.24 GHz • 100 Hz Sync</span>
+            <span className="font-mono text-[10px] text-brand-olive dark:text-brand-lime font-bold">2.4 GHz • 100 Hz Sync</span>
           </div>
 
           {/* Bottom RX Nodes Row */}

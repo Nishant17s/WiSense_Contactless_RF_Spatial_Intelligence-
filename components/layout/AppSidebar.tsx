@@ -67,7 +67,7 @@ const NAV_ITEMS = [
 export function AppSidebar() {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const { state } = useSensing();
+  const { state, mode } = useSensing();
 
   const isAlert = state?.safety.system_state === 'ALERT';
 
@@ -79,7 +79,10 @@ export function AppSidebar() {
     >
       {/* Navigation Links */}
       <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
+        {NAV_ITEMS.filter(item => {
+          if (mode === 'LIVE' && item.name === 'Spatial Intelligence') return false;
+          return true;
+        }).map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.path || (item.path === '/dashboard' && pathname === '/');
 

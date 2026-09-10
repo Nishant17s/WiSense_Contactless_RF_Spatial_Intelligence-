@@ -81,7 +81,7 @@ export function SensingProvider({ children }: { children: React.ReactNode }) {
         wsRef.current = null;
       }
 
-      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws/sensing';
+      const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8080/ws/sensing';
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 
@@ -104,7 +104,7 @@ export function SensingProvider({ children }: { children: React.ReactNode }) {
 
       ws.onerror = () => {
         setIsLiveConnected(false);
-        setLiveError('Cannot connect to live WiSense gateway (ws://localhost:8000/ws/sensing). Ensure hardware backend is running.');
+        setLiveError('Cannot connect to live WiSense gateway (ws://localhost:8080/ws/sensing). Ensure hardware backend is running.');
       };
 
       ws.onclose = () => {
@@ -132,12 +132,12 @@ export function SensingProvider({ children }: { children: React.ReactNode }) {
           max_capacity: 8,
           zone_breakdown: { 'Zone A': 0, 'Zone B': 0, 'Zone C': 0 },
           zone_probabilities: { A1: 0, A2: 0, A3: 0, B1: 0, B2: 0, B3: 0, C1: 0, C2: 0, C3: 0 },
-          room_status: 'STANDBY (AWAITING HARDWARE STREAM)',
+          room_status: 'EMPTY',
         },
         nodes: [
-          { id: 'TX-01', role: 'TX', status: 'STANDBY', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.101', mac_address: '48:E7:29:A1:01:FE', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -95, last_packet_ms: 9999 },
-          { id: 'RX-01', role: 'RX', status: 'STANDBY', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.102', mac_address: '48:E7:29:A1:02:AA', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -94, last_packet_ms: 9999 },
-          { id: 'RX-02', role: 'RX', status: 'STANDBY', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.103', mac_address: '48:E7:29:A1:03:BC', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -93, last_packet_ms: 9999 },
+          { id: 'TX-01', role: 'TX', status: 'OFFLINE', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.101', mac_address: '48:E7:29:A1:01:FE', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -95, last_packet_ms: 9999 },
+          { id: 'RX-01', role: 'RX', status: 'OFFLINE', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.102', mac_address: '48:E7:29:A1:02:AA', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -94, last_packet_ms: 9999 },
+          { id: 'RX-02', role: 'RX', status: 'OFFLINE', rssi: -95, csi_active: false, packet_rate: 0, ip_address: '192.168.4.103', mac_address: '48:E7:29:A1:03:BC', chipset: 'ESP32-S3', antenna: '6dBi Dipole', uptime: 0, error_count: 0, noise_floor: -93, last_packet_ms: 9999 },
         ],
         signal: {
           rssi: -95,
